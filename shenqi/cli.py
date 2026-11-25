@@ -47,7 +47,7 @@ def cmd_list(args) -> int:
     for r in rows:
         score = r["score"] if r["score"] is not None else "—"
         verdict = r["verdict"] or "未体检"
-        print(f"{r['id']:<4}{str(score):<6}{verdict:<12}{r['reviews']:<6}{r['title']}")
+        print(f"{r['id']:<4}{score!s:<6}{verdict:<12}{r['reviews']:<6}{r['title']}")
     return 0
 
 

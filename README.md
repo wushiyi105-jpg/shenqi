@@ -1,6 +1,6 @@
 # 审契 · Shenqi
 
-[![test](https://github.com/wushiyi105-jpg/shenqi/workflows/test/badge.svg)](https://github.com/wushiyi105-jpg/shenqi/actions) [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)]() [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![test](https://github.com/wushiyi105-jpg/shenqi/workflows/test/badge.svg)](https://github.com/wushiyi105-jpg/shenqi/actions) [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)]() [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE) [![codecov](https://codecov.io/gh/wushiyi105-jpg/shenqi/branch/main/graph/badge.svg)](https://codecov.io/gh/wushiyi105-jpg/shenqi)
 
 [![test](https://github.com/wushiyi105-jpg/shenqi/actions/workflows/test.yml/badge.svg)](https://github.com/wushiyi105-jpg/shenqi/actions/workflows/test.yml)
 
@@ -28,6 +28,22 @@
 这一条是硬的。模型给的每条风险都要带一句 20–60 字的原文，程序拿这句去合同里做子串匹配（忽略空白和标点）。找不到，这条直接丢掉，不给它辩解的机会，报告里只写一行「模型给了 N 条引不出原文的风险，已丢弃」。
 
 第一版我留得松：只要前 12 个字能对上就放行。结果发现 12 字经常正好跨到模型自己加的话上，匹配失败。改成前 10 个字，稳了。
+
+## 数据流
+
+一条数据在这几个模块之间怎么走：
+
+```mermaid
+flowchart LR
+    A[合同全文] --> B[text.py<br/>按条切分]
+    B --> C[rules.py<br/>10 条硬规则]
+    B --> D[review.py<br/>条款喂模型做语义审阅]
+    D --> E[llm.py<br/>只输出带引文的条目]
+    E --> F{review.py<br/>引文必须在原文里}
+    F -->|不在| G[丢掉]
+    F -->|在| H[rules.py + review.py<br/>合并 · 打分]
+    H --> I[store.py → cli.py / web.py]
+```
 
 ## 快速开始
 

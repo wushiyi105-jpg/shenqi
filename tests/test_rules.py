@@ -3,7 +3,6 @@ import unittest
 from shenqi import rules
 from shenqi import text as T
 
-
 BAD = """第一条 服务内容
 乙方为甲方提供年度顾问服务。
 

@@ -2,7 +2,6 @@ import unittest
 
 from shenqi import text as T
 
-
 SAMPLE = """第一条 服务内容
 乙方为甲方提供云盘企业版服务，账号数量 50 个。
 

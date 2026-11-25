@@ -4,7 +4,6 @@ from unittest import mock
 from shenqi import llm, review
 from shenqi import text as T
 
-
 CONTRACT = """第一条 费用
 合同总金额 60,000 元，甲方一次性支付全部款项。
 
