@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shenqi"
+version = "0.1.0"
+description = "合同体检：硬规则扫条款、模型读语义、每条引文回原文核验"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[project.scripts]
+shenqi = "shenqi.cli:main"
+
+[tool.setuptools]
+packages = ["shenqi"]
