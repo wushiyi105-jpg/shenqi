@@ -85,6 +85,13 @@ python -m shenqi serve          # http://127.0.0.1:8768
 
 Paste a contract on the left, the list appears on the right, and "只跑规则" shows something without spending a token.
 
+Run in Docker (the container uses the default port 8768):
+
+```bash
+docker build -t shenqi .
+docker run -p 8768:8768 shenqi
+```
+
 ## Command reference
 
 | Command | What it does |
@@ -143,6 +150,46 @@ That surprised me at first, then felt right: rules verify "is what should be wri
 2. **Which side you stand on, the rules did not know.** The revised version says "由甲方所在地人民法院管辖" — good for the client — and version one still reported "jurisdiction at the other side", because it did not know who "we" are. Added `--side`, defaulting to the client (the payer); the same sentence now only fires when viewed from the provider's side.
 
 3. **The model's budget was eaten by reasoning.** After switching to glm-4.6, the response was three characters — ` ``` ` — with `finish_reason` = `length`, 2998 of 3000 tokens spent on reasoning. The old fallback only handled "body completely empty" and did not recognise "only a stub left", so it failed all the way down. Changed to "finish_reason=length and body under 200 characters" also retries with a doubled budget, capped at 8000. Same problem and same fix on deepseek-flash.
+
+## 🤔 Why not just ask a general LLM
+
+A general model will list a few risks after reading a contract. Shenqi adds the three things it cannot:
+
+1. **The score does not depend on the model's mood** — the 100-point scale, deduction rules and required-clause checks are hard-coded, so the same contract scores the same twice; the model only adds risks the rules do not cover, each with its original text.
+2. **Quotes must exist in the contract** — every risk points at the sentence it came from and is flagged when the program cannot find it. Chat models like to present "standard clauses" as "clauses in your contract".
+3. **Contracts stay local** — a contract is among the last files to upload casually; text and findings live in local SQLite, and a model call sends only the current one.
+4. **Structured output** — severity, clause location, original text, why it matters and how to change it are listed per item, and `--json` fits a spreadsheet; a chat summary cannot be worked through clause by clause in a negotiation.
+
+## 🎯 Use cases
+
+- **Before renewing a SaaS contract**: focus on auto-renewal, price increases, data ownership and termination; the rules surface gaps such as "no way to cancel is written".
+- **Comparing the original and the revised version**: run the trap version, then the version the other side sent back, and see which items moved the score from 8 to 100.
+- **Handing it to a colleague**: export the risk list with who negotiates which item, instead of retelling the contract in a group chat.
+
+## 🗺 Roadmap
+
+- **Configurable rules**: the nine rules and required clauses as a config file, with different sets per contract type.
+- **Contract-type templates**: separate checklists for service, lease and employment contracts.
+- **Two-version diff**: mark clauses added or removed in the revised version, not just a new score.
+- **Negotiation wording**: for each high risk, a sentence you can send the other side.
+- **Report export**: the risk list as Markdown with original text and suggested changes.
+
+## ❓ FAQ
+
+**Where do I get an API key?**
+Rule review needs no key; only `review` without `--rules-only` calls a model. It defaults to Zhipu (`glm-4.6`), and DeepSeek works too — see `.env.example`.
+
+**Where is data stored, and is it uploaded?**
+Contract text and findings are in local SQLite; a model call sends only the current contract and nothing is retained elsewhere.
+
+**Does it work without a key?**
+Yes. `--rules-only` runs the rules alone: missing required clauses, auto-renewal and unilateral termination are still caught and scored; the model's extra risks are what you miss.
+
+**How do I switch models?**
+Change `LLM_BASE_URL`, `LLM_MODEL` and `LLM_API_KEY`; rules and scores are unaffected.
+
+**What does a score of 8 mean?**
+It is the sample contract's rule-based score, not the model's tone. The report lists which rules deducted points and which required clauses are missing.
 
 ## Layout
 
