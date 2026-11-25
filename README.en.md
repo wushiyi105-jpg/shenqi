@@ -8,7 +8,7 @@ Drop a contract in, get a risk list back: which clauses bite, where in the origi
 
 The eighth thing I built. I built it because I once signed a contract with "automatic renewal" — at the time I only saw "renews automatically for one year on expiry", thought nothing of it, and only later realised I had never noticed it did not say how to cancel.
 
-![demo](assets/demo.gif)
+![usage](assets/demo.gif)
 
 ## Why rules plus a model, two passes
 
@@ -158,7 +158,7 @@ shenqi/
 │   └── web.py      http.server page + JSON endpoints
 ├── samples/        two contrasting contracts (trap / revised)
 ├── tests/          86 offline unit tests
-├── scripts/        demo GIF generation, model availability probe (dev only)
+├── scripts/        usage GIF generation, model availability probe (dev only)
 └── assets/demo.gif
 ```
 

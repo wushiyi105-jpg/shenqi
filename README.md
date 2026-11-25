@@ -8,7 +8,7 @@
 
 我做的第 8 个东西。做它是因为我自己签过一份「自动续期」的合同——当时只看到"到期自动续一年"，觉得没什么，后来才发现自己根本没注意到它没说怎么取消。
 
-![demo](assets/demo.gif)
+![示例](assets/demo.gif)
 
 ## 为什么要规则 + 模型两道
 
@@ -158,7 +158,7 @@ shenqi/
 │   └── web.py      http.server 页面 + JSON 接口
 ├── samples/        两份对照合同（坑版 / 改后版）
 ├── tests/          86 个离线单测
-├── scripts/        生成演示 GIF、探测模型可用性（开发期用）
+├── scripts/        生成示例 GIF、探测模型可用性（开发期用）
 └── assets/demo.gif
 ```
 
