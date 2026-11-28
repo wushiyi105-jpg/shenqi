@@ -15,7 +15,7 @@ from . import llm, review, store
 PAGE = """<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>审契 · 合同体检</title>
+<title>审契 · 签之前两版差在哪</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#0b0f14;color:#c9d1d9;font:15px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
@@ -49,8 +49,75 @@ button:disabled{opacity:.5;cursor:default}
 .k{color:#8b949e;font-size:13px}
 .q{background:#161b22;border-radius:6px;padding:6px 10px;margin:6px 0;color:#8b949e;font-family:ui-monospace,Consolas,monospace;font-size:13px}
 .empty{color:#8b949e}
+
+:root{--maxw:1080px;--bg:#f4efdf;--card:#fffdf6;--ink:#22201b;--text:#22201b;--dim:#6e695d;--line:#d9cfb8;--accent:#8f2f2c;--muted:#6e695d}
+.wrap{max-width:1080px}
+body{background:#f4efdf;color:#22201b;font-family:"Songti SC","SimSun",Georgia,serif}
+h1{color:#22201b}
+header{max-width:1080px;margin:0 auto}
+input,textarea,select{background:#fff;color:#22201b;border-color:#d9cfb8;border-radius:2px}
+button:not(.ghost):not(.tab){background:#8f2f2c;color:#fff;border-radius:2px}
+button.ghost{background:transparent!important;color:#8f2f2c!important;border:1px solid #d9cfb8!important}
+h2,h3{color:#8f2f2c}
+pre{background:#fafaf6;color:#22201b;border-color:#d9cfb8}
+.item,.card{border-color:#d9cfb8;background:#fffdf6}
+.k,.empty,.hint{color:#6e695d}
+
+h1{font-size:clamp(31px,5vw,39px);line-height:1.26}
+.prod{display:block;font-size:11px;line-height:1.4;letter-spacing:.18em;font-weight:650;margin-bottom:8px;opacity:.72}
+.lede,.sub{max-width:62ch;line-height:1.75}
+.route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:16px auto 20px;border:1px solid var(--line);background:var(--line);max-width:var(--maxw)}
+.route span{padding:11px 13px;background:var(--card);font-size:12px;line-height:1.5}
+.route b{display:block;font-size:10px;letter-spacing:.1em;margin-bottom:3px;opacity:.66}
+button{min-height:46px}
+input,select{min-height:44px}
+pre{white-space:pre-wrap}
+@media(max-width:680px){
+  .wrap{padding:20px 16px 56px}
+  .route{grid-template-columns:1fr}
+  h1{font-size:30px!important}
+  .row>div{min-width:100%!important}
+  button{width:100%}
+}
+
+body{background:#f4efdf;color:#22201b}
+header{display:block!important;max-width:1080px;margin:0 auto;padding:24px 20px 0;background:transparent;border:0}
+header h1{color:#22201b;font-size:38px;line-height:1.24}
+header .sub{display:block;color:#6e695d;font-size:14px;margin-top:6px;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1080px;margin:0 auto;background:#fffdf6;border-left:1px solid #d9cfb8;border-right:1px solid #d9cfb8;grid-template-columns:330px 1fr;min-height:calc(100vh - 150px)}
+aside{background:#f9f4e7;border-right:1px solid #d9cfb8}
+section{background:#fffdf6}
+input,textarea,select{background:#fff;color:#22201b;border-color:#d3c7ae;border-radius:1px}
+input:focus,textarea:focus,select:focus{border-color:#8f2f2c;box-shadow:0 0 0 2px #ead8d3}
+button{background:#8f2f2c;color:#fff;border-radius:1px}
+button:hover{background:#782521}
+.item,.card{background:#fff;border-color:#d9cfb8;border-radius:1px}
+h2{color:#8f2f2c}
+.empty,.k{color:#6e695d}
+pre{background:#fbf6e9;color:#22201b;border-color:#d9cfb8}
+
+
+/* mobile-32 */
+input[type=text],input[type=number],input[type=email]{background:#fff;color:#22201b;border-color:#d9cfb8}
+
+@media(max-width:760px){
+  main{grid-template-columns:1fr!important}
+  aside{border-right:0!important;border-bottom:1px solid #d9cfb8;width:auto!important}
+  section{padding:16px!important}
+  .row{flex-wrap:wrap!important}
+  .row>div{min-width:100%!important}
+  h1{font-size:30px!important}
+  .route{grid-template-columns:1fr!important}
+  button{min-height:48px}
+  pre{overflow-x:auto}
+}
+
+/* mobile-height */
+@media(max-width:760px){main{min-height:auto!important}aside{min-height:0!important}}
 </style></head><body>
-<header><h1>审契</h1><span class="sub">合同条款体检 · 规则扫硬伤，模型读语义，引文必须能在原文里找到</span></header>
+<header><h1><span class="prod">审契</span>签之前，这两版差在哪</h1><p class="lede">给小团队签前的条款核对：每条待复核项回到原条款和版本，能备注、提问、生成修订草稿，也能标记已交专业人士复核。</p></header>
+  <div class="route" aria-label="任务步骤"><span><b>01</b>导入两版合同</span><span><b>02</b>对条款差异</span><span><b>03</b>生成谈判清单</span></div>
+
 <main>
 <aside>
   <input type="text" id="title" placeholder="合同名字，比如：云盘服务合同">
